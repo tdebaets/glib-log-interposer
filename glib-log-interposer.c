@@ -23,30 +23,20 @@
 #include <dlfcn.h>
 #include <glib.h>
 
+// TODO: update copyright years
+// TODO: move post-build step to script (in Scripts subdirectory) and disable by default
+// TODO: move source files to subdirectory
+// TODO: move Debug and Release directories to Output directory and update readme
+
 #include "glib-log-interposer.h"
+
+// TODO: compile to both 32-bit and 64-bit?
 
 gboolean get_interposer_disabled()
 {
     char *env_var = getenv("GLIB_LOG_INTERPOSER_DISABLE");
 
     return (env_var && strcmp(env_var, "1") == 0);
-}
-
-typedef void (* g_logv_func)(const gchar    *log_domain,
-                             GLogLevelFlags  log_level,
-                             const gchar    *format,
-                             va_list         args) G_GNUC_PRINTF(3, 0);
-
-// TODO: remove or rename
-G_GNUC_PRINTF(3, 0) void g_logv(const gchar    *log_domain,
-            GLogLevelFlags  log_level,
-            const gchar    *format,
-            va_list         args)
-{
-    //g_log_func func = (g_log_func)dlsym(RTLD_NEXT, "g_log");
-    //assert(func != NULL);
-
-    dbgprint("log_domain=\"%s\"", log_domain);
 }
 
 // TODO: remove
@@ -186,6 +176,7 @@ void g_assertion_message_error(const char     *domain,
     dbgprint("%s", expr);
 }
 
+// TODO: add comment about where this is triggered (peas_object_module_register_extension_factory in peas-object-module.c)
 typedef void (* g_return_if_fail_warning_func)(const char *log_domain,
                                                const char *pretty_function,
                                                const char *expression);

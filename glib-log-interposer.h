@@ -2,7 +2,7 @@
  *
  *            glib-log-interposer
  *
- *            Copyright (c) 2025 Tim De Baets
+ *            Copyright (c) 2026 Tim De Baets
  *
  ****************************************************************************
  *

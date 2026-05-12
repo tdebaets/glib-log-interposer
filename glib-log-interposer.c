@@ -2,7 +2,7 @@
  *
  *            glib-log-interposer
  *
- *            Copyright (c) 2025 Tim De Baets
+ *            Copyright (c) 2026 Tim De Baets
  *
  ****************************************************************************
  *
@@ -23,10 +23,11 @@
 #include <dlfcn.h>
 #include <glib.h>
 
-// TODO: update copyright years
 // TODO: move post-build step to script (in Scripts subdirectory) and disable by default
 // TODO: move source files to subdirectory
 // TODO: move Debug and Release directories to Output directory and update readme
+// TODO: add scripts to do headless builds (see "Eclipse headless build.txt" and "Old/geteclipseprefs.sh")
+//      also test with newer Eclipse versions
 
 #include "glib-log-interposer.h"
 

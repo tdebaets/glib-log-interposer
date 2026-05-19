@@ -24,6 +24,7 @@
 #include <glib.h>
 
 // TODO: move post-build step to script (in Scripts subdirectory) and disable by default
+//      also test command-line compile
 // TODO: move source files to subdirectory
 // TODO: move Debug and Release directories to Output directory and update readme
 // TODO: add scripts to do headless builds (see "Eclipse headless build.txt" and "Old/geteclipseprefs.sh")

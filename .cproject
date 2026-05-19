@@ -41,7 +41,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.debug.2072390956" name="Debug" optionalBuildProperties="" parent="cdt.managedbuild.config.gnu.so.debug" postbuildStep="pwd; rm &quot;${HOME}/${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot;; cp &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${HOME}">
+                <configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.debug.2072390956" name="Debug" optionalBuildProperties="" parent="cdt.managedbuild.config.gnu.so.debug" postbuildStep="../Scripts/post-build.sh &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot;">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.so.debug.2072390956." name="/" resourcePath="">
                         						
@@ -179,7 +179,7 @@
             			
             <storageModule moduleId="cdtBuildSystem" version="4.0.0">
                 				
-                <configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.release.1294797680" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=" parent="cdt.managedbuild.config.gnu.so.release" postbuildStep="pwd; rm &quot;${HOME}/${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot;; cp &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot; ${HOME}">
+                <configuration artifactExtension="so" artifactName="${ProjName}" buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib" buildProperties="org.eclipse.cdt.build.core.buildArtefactType=org.eclipse.cdt.build.core.buildArtefactType.sharedLib,org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release" cleanCommand="rm -rf" description="" id="cdt.managedbuild.config.gnu.so.release.1294797680" name="Release" optionalBuildProperties="org.eclipse.cdt.docker.launcher.containerbuild.property.selectedvolumes=,org.eclipse.cdt.docker.launcher.containerbuild.property.volumes=" parent="cdt.managedbuild.config.gnu.so.release" postbuildStep="../Scripts/post-build.sh &quot;${BuildArtifactFilePrefix}${BuildArtifactFileName}&quot;">
                     					
                     <folderInfo id="cdt.managedbuild.config.gnu.so.release.1294797680." name="/" resourcePath="">
                         						
@@ -313,6 +313,20 @@
     	
     <storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
     	
-    <storageModule moduleId="refreshScope"/>
+    <storageModule moduleId="refreshScope" versionNumber="2">
+        		
+        <configuration configurationName="Debug">
+            			
+            <resource resourceType="PROJECT" workspacePath="/glib-log-interposer"/>
+            		
+        </configuration>
+        		
+        <configuration configurationName="Release">
+            			
+            <resource resourceType="PROJECT" workspacePath="/glib-log-interposer"/>
+            		
+        </configuration>
+        	
+    </storageModule>
     
 </cproject>

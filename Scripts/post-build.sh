@@ -28,24 +28,29 @@ fi
 
 return_code=
 so_filename=$1
-target_filename="${HOME}/${so_filename}"
+deploy_dir=$GLIB_LOG_INTERPOSER_DEPLOY_DIR
+target_filename="${deploy_dir}/${so_filename}"
 
 echo "${so_filename}"
 
 pwd
 
-if [ -f "$target_filename" ]; then
-    rm "$target_filename"
+if [ ! -z "${deploy_dir}" ]; then
+
+    if [ -f "${target_filename}" ]; then
+        rm "${target_filename}"
+        return_code=$?
+
+        if [ $return_code -ne 0 ]; then
+            exit $return_code
+        fi
+    fi
+
+    cp "${so_filename}" "${deploy_dir}"
     return_code=$?
 
     if [ $return_code -ne 0 ]; then
         exit $return_code
     fi
-fi
 
-cp "${so_filename}" ${HOME}
-return_code=$?
-
-if [ $return_code -ne 0 ]; then
-    exit $return_code
 fi

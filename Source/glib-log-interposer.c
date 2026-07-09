@@ -23,14 +23,11 @@
 #include <dlfcn.h>
 #include <glib.h>
 
-// TODO: move source files to subdirectory
 // TODO: move Debug and Release directories to Output directory and update readme
 // TODO: add scripts to do headless builds (see "Eclipse headless build.txt" and "Old/geteclipseprefs.sh")
 //      also test with newer Eclipse versions
 
 #include "glib-log-interposer.h"
-
-// TODO: compile to both 32-bit and 64-bit?
 
 gboolean get_interposer_disabled()
 {
@@ -120,6 +117,7 @@ void g_log(const gchar* log_domain, GLogLevelFlags log_level, const gchar* forma
 
 typedef gboolean (* g_source_remove_func)(guint tag);
 
+// TODO: add comment
 gboolean g_source_remove(guint tag)
 {
     GSource *source;
@@ -143,40 +141,6 @@ gboolean g_source_remove(guint tag)
     return func(tag);
 }
 
-// TODO: remove
-void g_assertion_message(const char     *domain,
-                         const char     *file,
-                         int             line,
-                         const char     *func,
-                         const char     *message)
-{
-    dbgprint("%s", message);
-}
-
-// TODO: remove
-void g_assertion_message_expr(const char     *domain,
-                              const char     *file,
-                              int             line,
-                              const char     *func,
-                              const char     *expr)
-{
-    dbgprint("%s", expr);
-}
-
-// TODO: remove
-void g_assertion_message_error(const char     *domain,
-                               const char     *file,
-                               int             line,
-                               const char     *func,
-                               const char     *expr,
-                               const GError   *error,
-                               GQuark          error_domain,
-                               int             error_code)
-{
-    dbgprint("%s", expr);
-}
-
-// TODO: add comment about where this is triggered (peas_object_module_register_extension_factory in peas-object-module.c)
 typedef void (* g_return_if_fail_warning_func)(const char *log_domain,
                                                const char *pretty_function,
                                                const char *expression);

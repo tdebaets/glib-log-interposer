@@ -36,17 +36,7 @@ gboolean get_interposer_disabled()
     return (env_var && strcmp(env_var, "1") == 0);
 }
 
-// TODO: remove
-typedef void (* g_log_structured_standard_func)(const gchar    *log_domain,
-                                                GLogLevelFlags  log_level,
-                                                const gchar    *file,
-                                                const gchar    *line,
-                                                const gchar    *func,
-                                                const gchar    *message_format,
-                                                ...) G_GNUC_PRINTF (6, 7);
-
-// TODO
-G_GNUC_PRINTF (6, 7) void g_log_structured_standard (const gchar    *log_domain,
+void g_log_structured_standard (const gchar    *log_domain,
                                 GLogLevelFlags  log_level,
                                 const gchar    *file,
                                 const gchar    *line,
@@ -56,59 +46,36 @@ G_GNUC_PRINTF (6, 7) void g_log_structured_standard (const gchar    *log_domain,
 {
     va_list args;
 
-    // TODO: remove
-    // TODO: only load once
-    // TODO: unload again?
-    /*void *handle = dlopen("libglib-2.0.so.0", RTLD_LOCAL | RTLD_NOW);
-    assert (handle != NULL);
-    g_log_structured_standard_func orig_func =
-            (g_log_structured_standard_func)dlsym(handle, "g_log_structured_standard");
-    assert(orig_func != NULL);*/
-
     va_start(args, message_format);
 
     dbgvprint(message_format, args, "log_domain=\"%s\"", log_domain);
 
-    // TODO: add comment that calling the original function here isn't possible
-
     if (get_interposer_disabled())
     {
+        /*
+         * Because this is a variadic function, we can't call the function's original
+         * implementation (no way to pass the additional arguments without va_start/va_end).
+         */
         g_logv(log_domain, log_level, message_format, args);
     }
 
     va_end(args);
 }
 
-// TODO: remove
-typedef void (* g_log_func)(const gchar* log_domain,
-                            GLogLevelFlags log_level,
-                            const gchar* format,
-                            ...);
-
 void g_log(const gchar* log_domain, GLogLevelFlags log_level, const gchar* format, ...)
 {
     va_list args;
-    //char buffer[1024]; // TODO remove
-
-    // TODO: remove
-    //g_log_func func = (g_log_func)dlsym(RTLD_NEXT, "g_log");
-    //assert(func != NULL);
-
-    // TODO remove
-    /*va_start(args, format);
-    vsnprintf(buffer, 1024, format, args);
-    va_end(args);
-
-    printf("%s\n", buffer);*/
 
     va_start(args, format);
 
     dbgvprint(format, args, "log_domain=\"%s\"", log_domain);
 
-    // TODO: add comment that calling the original function here isn't possible
-
     if (get_interposer_disabled())
     {
+        /*
+         * Because this is a variadic function, we can't call the function's original
+         * implementation (no way to pass the additional arguments without va_start/va_end).
+         */
         g_logv(log_domain, log_level, format, args);
     }
 
@@ -117,7 +84,19 @@ void g_log(const gchar* log_domain, GLogLevelFlags log_level, const gchar* forma
 
 typedef gboolean (* g_source_remove_func)(guint tag);
 
-// TODO: add comment
+/*
+ * This implementation replaces the original g_source_remove() implementation in glib/gmain.c.
+ * When the g_main_context_find_source_by_id() call in the original implementation returns NULL, a
+ * "Source ID %u was not found when attempting to remove it" message is printed to the terminal.
+ * An example of when these messages are generated is exiting the Eclipse IDE, after one (or more)
+ * of the projects opened in the IDE were automatically refreshed using the Eclipse 'Zoodiac'
+ * plug-in.
+ * The macro used by GLib for printing these messages is g_critical(), which is a wrapper around
+ * the g_log_structured_standard() function. But because this function is called internally in the
+ * GLib library, it is not replaced by our g_log_structured_standard() implementation above. To
+ * work around this, we replace the g_source_remove() function and only call the original
+ * implementation when we're sure that it won't print the unwanted message.
+ */
 gboolean g_source_remove(guint tag)
 {
     GSource *source;
@@ -130,6 +109,9 @@ gboolean g_source_remove(guint tag)
     assert(func != NULL);
 
     dbgprint("tag=%u", tag);
+    
+    if (get_interposer_disabled())
+        return func(tag);
 
     source = g_main_context_find_source_by_id(NULL, tag);
 
@@ -149,7 +131,8 @@ void g_return_if_fail_warning(const char *log_domain,
                               const char *pretty_function,
                               const char *expression)
 {
-    g_return_if_fail_warning_func func = (g_return_if_fail_warning_func)dlsym(RTLD_NEXT, "g_return_if_fail_warning");
+    g_return_if_fail_warning_func func =
+            (g_return_if_fail_warning_func)dlsym(RTLD_NEXT, "g_return_if_fail_warning");
     assert(func != NULL);
 
     dbgprint("%s", expression);

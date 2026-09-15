@@ -55,7 +55,7 @@ ERROR: ld.so: object '/lib/x86_64-linux-gnu/libglib-log-interposer.so' from LD_P
 ```
 Then that means that the Linux loader tried to preload the 64-bit version of the interposer into the address space of a 32-bit process. This is simply not possible: a 32-bit process can only load 32-bit shared libraries, and a 64-bit process can only load 64-bit shared libraries.
 
-The solution is to also build the 32-bit version of the interposer, even though the operating system itself is 64-bit ('cross-compiling'). This may first require you to install some additional dependencies, as well as adding the `i386` architecture to `dpkg`:
+The solution is to also build the 32-bit version of the interposer, even though the operating system itself is 64-bit ('cross-compilation'). This may first require you to install some additional dependencies, as well as adding the `i386` architecture to `dpkg`:
 ```
 sudo apt install g++-multilib \
                  gcc-multilib
@@ -68,7 +68,7 @@ Additionally, you will also need to adapt your `LD_PRELOAD` environment variable
 
 ### How can I define `LD_PRELOAD` for both 32-bit and 64-bit executables?
 
-To be able to do this, both the 32-bit and 64-bit interposer should be located in predefined subdirectories where Linux expects them (`i386-linux-gnu` and `x86_64-linux-gnu`). The easiest way to do this is to define another environment variable, `GLIB_LOG_INTERPOSER_DEPLOY_DIR`.
+To be able to do this, both the 32-bit and 64-bit interposers should be located in predefined subdirectories where Linux expects them (`i386-linux-gnu` and `x86_64-linux-gnu`). The easiest way to do this is to define another environment variable, `GLIB_LOG_INTERPOSER_DEPLOY_DIR`.
 
 When `GLIB_LOG_INTERPOSER_DEPLOY_DIR` is defined, the project's post-build script will take care of copying the compiled interposer file to the expected deploy subdirectory, depending on whether the build was 32-bit or 64-bit.
 
